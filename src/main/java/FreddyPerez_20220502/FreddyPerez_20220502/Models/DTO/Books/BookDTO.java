@@ -2,6 +2,7 @@ package FreddyPerez_20220502.FreddyPerez_20220502.Models.DTO.Books;
 
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Positive;
 import lombok.*;
 
 import java.time.LocalDate;
@@ -17,11 +18,10 @@ public class BookDTO {
     private String titulo;
 
     @NotBlank(message = "El isbn no puede ser nulo")
-    @Max(value = 20, message = "El isbn debe tener como maximo 20 caracteres")
     private String isbn;
 
-    @NotBlank(message = "La fecha no puede ser nulo")
-    private LocalDate anio_publicacion;
+    @Positive
+    private Long anio_publicacion;
 
     @NotBlank(message = "El genero no puede ser nulo")
     private String genero;

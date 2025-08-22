@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.Instant;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -28,10 +29,15 @@ public class BookController {
         return service.getBooks();
     }
 
+    @GetMapping("/getBookById/{id}")
+    public List<BookDTO> getBookById(@PathVariable Long id){
+        return service.getBookById();
+    }
+
     @PostMapping("/insertBook")
     public ResponseEntity<Map<String, Object>> insertBook(@Valid @RequestBody BookDTO dto, HttpServletRequest request){
         try{
-            BookDTO answer = BookService.insertBook(dto);
+            BookDTO answer = service.insertBook(dto);
             if(answer == null){
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of(
                    "status", "error",
@@ -40,18 +46,21 @@ public class BookController {
                 ));
             }
             return ResponseEntity.status(HttpStatus.CREATED).body(Map.of(
-
+                "status", "success",
+                    "data", answer
             ));
         }
         catch (Exception e){
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of(
-
+                    "status", "error",
+                    "message", "Error de insercion",
+                    "detail", e.getMessage()
             ));
         }
     }
 
     @PutMapping("/updateBook/{id}")
-    public ResponseEntity<?> updateBook(@PathVariable Long id, @Valid, @RequestBody BookDTO dto, BindingResult bindingResult){
+    public ResponseEntity<?> updateBook(@PathVariable Long id, @Valid @RequestBody BookDTO dto, BindingResult bindingResult){
         if(bindingResult.hasErrors()){
             Map<String, String > errors = new HashMap<>();
             bindingResult.getFieldErrors().forEach(error ->
@@ -59,19 +68,24 @@ public class BookController {
             return ResponseEntity.badRequest().body(errors);
         }
         try{
-            BookDTO answer = BookService.updateBook(id, dto);
+            BookDTO answer = service.updateBook(id, dto);
             if(answer == null){
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of(
-
+                    "status", "error",
+                        "error type", "Validation error",
+                        "message", answer
                 ));
             }
             return ResponseEntity.status(HttpStatus.ACCEPTED).body(Map.of(
-
+                    "status", "success",
+                    "data", answer
             ));
         }
         catch (Exception e){
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of(
-
+                    "status", "error",
+                    "message", "Error de actualizacion",
+                    "detail", e.getMessage()
             ));
         }
     }
@@ -79,18 +93,23 @@ public class BookController {
     @DeleteMapping("/deleteBook/{id}")
     public ResponseEntity<Map<String, Object>> deleteBook(@PathVariable Long id){
         try{
-            if(!BookService.deleteBook(id)){
+            if(!service.deleteBook(id)){
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of(
-
+                    "error", "not found",
+                        "mesaage", "id no encontrado",
+                        "timestamp", Instant.now().toString()
                 ));
             }
             return ResponseEntity.status(HttpStatus.OK).body(Map.of(
-
+                "status", "process completed",
+                    "message", "Proceso completado con exito"
             ));
         }
         catch (Exception e){
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of(
-
+                    "status", "error",
+                    "message", "Error de eliminacion",
+                    "detail", e.getMessage()
             ));
         }
     }

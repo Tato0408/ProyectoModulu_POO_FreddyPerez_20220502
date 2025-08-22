@@ -14,8 +14,8 @@ import java.time.LocalDate;
 public class BookEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE,
-                    generator = "seq_libro")
-    @SequenceGenerator(name = "seq_libro", sequenceName = "seq_libro", allocationSize = 1)
+                    generator = "SEQ_LIBRO")
+    @SequenceGenerator(name = "SEQ_LIBRO", sequenceName = "SEQ_LIBRO", allocationSize = 1)
     @Column(name = "ID")
     private Long id;
 
@@ -26,7 +26,7 @@ public class BookEntity {
     private String isbn;
 
     @Column(name = "AÑO_PUBLICACION")
-    private LocalDate anio_publicacion;
+    private Long anio_publicacion;
 
     @Column(name = "GENERO")
     private String genero;
@@ -35,3 +35,9 @@ public class BookEntity {
     private Long id_Autor;
 
 }
+
+
+
+
+
+
