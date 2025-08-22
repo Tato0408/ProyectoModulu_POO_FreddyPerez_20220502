@@ -11,7 +11,9 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-@Service @Slf4j
+//Especializacion de @Component, cada clase Service en el proyecto debe llevar la anotacion
+@Service
+@Slf4j
 public class BookService {
     //Inyectamos el repositorio de Libro
     @Autowired

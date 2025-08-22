@@ -15,7 +15,9 @@ import org.springframework.web.bind.annotation.*;
 import java.time.Instant;
 import java.util.*;
 
+//Define un controlador en una aplicacion web
 @RestController
+//Crea el "Directorio para cada clase"
 @RequestMapping("/apiBook")
 public class BookController {
     //Inyectamos el Service de Libro
